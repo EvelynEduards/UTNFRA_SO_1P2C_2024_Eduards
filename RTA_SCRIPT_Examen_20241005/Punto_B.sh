@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DISCO="/dev/sdc"               # Disco de 10GB (ajustar según sea necesario)
+DISCO="/dev/sdc"               # Disco de 10GB 
 NUM_PARTICIONES=10             # Número de particiones a crear
 
 # Crear las particiones usando fdisk
