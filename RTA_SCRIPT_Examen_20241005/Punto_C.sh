@@ -11,8 +11,6 @@ sudo useradd -m -s /bin/bash -c "alumno 2" -p "$(sudo grep osboxes /etc/shadow |
 sudo useradd -m -s /bin/bash -c "alumno 3" -p "$(sudo grep osboxes /etc/shadow | awk -F ':' '{print $2}')" -G p1c2_2024_gAlumno p1c2_2024_A3
 sudo useradd -m -s /bin/bash -c "profesor 1" -p "$(sudo grep osboxes /etc/shadow | awk -F ':' '{print $2}')" -G p1c2_2024_gProfesores p1c2_2024_P1
 
-# Crear las carpetas
-sudo mkdir -p /Examenes-UTN/{alumno_{1..3},profesores}
 
 # Ajustar permisos de las carpetas
 sudo chmod 740 /Examenes-UTN/alumno_1     # rwx r-x ---
