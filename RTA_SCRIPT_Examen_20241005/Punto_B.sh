@@ -3,20 +3,27 @@
 DISCO="/dev/sdc"               # Disco de 10GB 
 NUM_PARTICIONES=10             # Número de particiones a crear
 
-# Crear las particiones usando fdisk
-(
-echo o   # Crear una nueva tabla de particiones DOS
+# Crear las particiones usando parted
+echo "Creando particiones primarias de 1 GiB..."
+parted -s $DISCO mkpart primary 0% 1GiB
+parted -s $DISCO mkpart primary 1GiB 2GiB
+parted -s $DISCO mkpart primary 2GiB 3GiB
 
-for i in $(seq 1 $NUM_PARTICIONES); do
-    echo n    # Crear una nueva partición
-    echo p    # Tipo de partición primaria
-    echo $i   # Número de partición
-    echo      # Usar el sector por defecto para el inicio
-    echo      # Usar el sector por defecto para el final
-done
+# Crear la partición extendida de 7 GiB
+echo "Creando partición extendida de 7 GiB..."
+parted -s $DISCO mkpart extended 3GiB 10GiB
 
-echo w    # Guardar los cambios y salir
-) | sudo fdisk "$DISCO"
+# Crear las particiones lógicas de 1 GiB dentro de la partición extendida
+echo "Creando particiones lógicas dentro de la partición extendida..."
+parted -s $DISCO mkpart logical 3GiB 4GiB
+parted -s $DISCO mkpart logical 4GiB 5GiB
+parted -s $DISCO mkpart logical 5GiB 6GiB
+parted -s $DISCO mkpart logical 6GiB 7GiB
+parted -s $DISCO mkpart logical 7GiB 8GiB
+parted -s $DISCO mkpart logical 8GiB 9GiB
+parted -s $DISCO mkpart logical 9GiB 10GiB
+
+echo "Las particiones han sido creadas."
 
 # Formatear cada partición en ext4
 for i in $(seq 1 $NUM_PARTICIONES); do
